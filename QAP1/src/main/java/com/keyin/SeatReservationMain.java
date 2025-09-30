@@ -40,9 +40,16 @@ public class SeatReservationMain {
 
             System.out.print("\nSelect an option: ");
 
-            // TODO Add validation
-            option = scanner.nextInt();
-            scanner.nextLine();
+            while (true) {
+                if (scanner.hasNextInt()){
+                    option = scanner.nextInt();
+                    scanner.nextLine();
+                    break;
+                } else {
+                    scanner.nextLine();
+                    System.out.print("Invalid option. Please enter a number: ");
+                }
+            }
 
             switch (option) {
                 case 1:
@@ -55,6 +62,9 @@ public class SeatReservationMain {
                     enterToContinue();
                     break;
                 case 3:
+                    displaySeats();
+                    cancelReservation();
+                    enterToContinue();
                     break;
                 case 4:
                     System.out.println("\nThank you for using the Movie Theater Seat Reservation system. Have a good day!");
@@ -113,22 +123,46 @@ public class SeatReservationMain {
         do {
             System.out.println("\nSelect a seat you would like to reserve (-1 to quit):\n");
 
-            // TODO Add validation
             System.out.print("Row: ");
-            row = scanner.nextInt();
-            scanner.nextLine();
 
-            if (row == -1) {
-                break;
+            while (true) {
+                if (scanner.hasNextInt()){
+                    row = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (row == -1) {
+                        return;
+                    }
+                    else if (row < 1 || row > seats.length) {
+                        System.out.printf("Invalid option. Please enter a number between 1 and %d: ", seats.length);
+                    } else {
+                        break;
+                    }
+                } else {
+                    scanner.nextLine();
+                    System.out.print("Invalid option. Please enter a valid positive number: ");
+                }
             }
 
-            // TODO Add validation
             System.out.print("Column: ");
-            column = scanner.nextInt();
-            scanner.nextLine();
 
-            if (column == -1) {
-                break;
+            while (true) {
+                if (scanner.hasNextInt()){
+                    column = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (column == -1) {
+                        return;
+                    }
+                    else if (column < 1 || column > seats[row - 1].length) {
+                        System.out.printf("Invalid option. Please enter a number between 1 and %d: ", seats[row - 1].length);
+                    } else {
+                        break;
+                    }
+                } else {
+                    scanner.nextLine();
+                    System.out.print("Invalid option. Please enter a valid positive number: ");
+                }
             }
 
             // Check if the seat is available. If it's not, recommend the next available seat.
@@ -187,5 +221,9 @@ public class SeatReservationMain {
 
     private static String recommendedSeatMessage(int row, int column) {
         return String.format("Recommended seat\nRow: %d\nColumn: %d\n", row, column);
+    }
+
+    private static void cancelReservation() {
+
     }
 }
