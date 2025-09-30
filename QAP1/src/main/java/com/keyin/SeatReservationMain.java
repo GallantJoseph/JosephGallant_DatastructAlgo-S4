@@ -168,7 +168,7 @@ public class SeatReservationMain {
             // Check if the seat is available. If it's not, recommend the next available seat.
             if (seats[row - 1][column - 1] == FREE_SEAT) {
                 seats[row - 1][column - 1] = RESERVED_SEAT;
-                System.out.printf("\nThe seat in row %d and column %d has been reserved successfully!\n", row, column);
+                System.out.printf("\nThe seat on row %d and column %d has been reserved successfully!\n", row, column);
 
                 enterToContinue();
                 displaySeats();
@@ -224,6 +224,64 @@ public class SeatReservationMain {
     }
 
     private static void cancelReservation() {
+        int row;
+        int column;
 
+        do {
+            System.out.println("\nSelect a seat reservation you would like to cancel (-1 to quit):\n");
+
+            System.out.print("Row: ");
+
+            while (true) {
+                if (scanner.hasNextInt()){
+                    row = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (row == -1) {
+                        return;
+                    }
+                    else if (row < 1 || row > seats.length) {
+                        System.out.printf("Invalid option. Please enter a number between 1 and %d: ", seats.length);
+                    } else {
+                        break;
+                    }
+                } else {
+                    scanner.nextLine();
+                    System.out.print("Invalid option. Please enter a valid positive number: ");
+                }
+            }
+
+            System.out.print("Column: ");
+
+            while (true) {
+                if (scanner.hasNextInt()){
+                    column = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (column == -1) {
+                        return;
+                    }
+                    else if (column < 1 || column > seats[row - 1].length) {
+                        System.out.printf("Invalid option. Please enter a number between 1 and %d: ", seats[row - 1].length);
+                    } else {
+                        break;
+                    }
+                } else {
+                    scanner.nextLine();
+                    System.out.print("Invalid option. Please enter a valid positive number: ");
+                }
+            }
+
+            if (seats[row - 1][column - 1] == RESERVED_SEAT) {
+                seats[row - 1][column - 1] = FREE_SEAT;
+                System.out.printf("\nThe seat reservation on row %d and column %d has been cancelled successfully!\n", row, column);
+
+                enterToContinue();
+                displaySeats();
+                break;
+            } else {
+                System.out.println("\nThat seat is already available.");
+            }
+        } while (true);
     }
 }
