@@ -1,5 +1,7 @@
 package com.keyin.UserManagement;
 
+import com.keyin.Model.User;
+
 public class UserService {
     private User[] users;
     private int userCount = 0;
@@ -29,6 +31,11 @@ public class UserService {
         }
 
         System.out.println("Invalid username or password.");
+    }
+
+    public void logout() {
+        loggedInUser = null;
+        System.out.println("Logged out successfully.");
     }
 
     public void register(String username, String password, String firstName, String lastName, String email) {

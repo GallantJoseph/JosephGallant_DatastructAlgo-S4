@@ -1,4 +1,4 @@
-package com.keyin.TaskManagement;
+package com.keyin.Model;
 
 public class Task {
     private String description;

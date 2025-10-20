@@ -6,7 +6,8 @@ package com.keyin;
  * Date: October 18, 2025
  */
 
-import com.keyin.TaskManagement.TaskService;
+import com.keyin.Model.Task;
+import com.keyin.TaskLinkedList.TaskList;
 import com.keyin.UserManagement.UserService;
 
 import java.util.Scanner;
@@ -21,7 +22,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         UserService userService = new UserService();
-        TaskService taskService = new TaskService();
 
         do {
             System.out.println("\nWelcome to the Task Management System\n");
@@ -40,7 +40,7 @@ public class Main {
                     loginMenu(scanner, userService);
 
                     if (userService.getLoggedInUser() != null) {
-                        taskManagementMenu(scanner, userService, taskService);
+                        taskManagementMenu(scanner, userService);
                     }
                     break;
                 case REGISTER_OPTION:
@@ -99,7 +99,82 @@ public class Main {
         userService.register(username, password, firstName, lastName, email);
     }
 
-    private static void taskManagementMenu(Scanner scanner, UserService userService, TaskService taskService) {
-        // TODO Implement task management menu
+    private static void taskManagementMenu(Scanner scanner, UserService userService) {
+        final int VIEW_ALL_TASKS_OPTION = 1;
+        final int VIEW_PENDING_TASKS_OPTION = 2;
+        final int VIEW_COMPLETED_TASKS_OPTION = 3;
+        final int ADD_TASK_OPTION = 4;
+        final int MARK_TASK_COMPLETED_OPTION = 5;
+        final int MARK_TASK_PENDING_OPTION = 6;
+        final int EDIT_TASK_DESCRIPTION_OPTION = 7;
+        final int DELETE_TASK_OPTION = 8;
+        final int LOGOUT_OPTION = 9;
+        int menuOption;
+
+        if (userService.getLoggedInUser() == null) {
+            System.out.println("No user is currently logged in.");
+            return;
+        }
+
+        TaskList userTasks = userService.getLoggedInUser().getTasks();
+
+        System.out.printf("\nTask Management Main Menu. Welcome %s!\n", userService.getLoggedInUser().getFirstName());
+        System.out.println("--------------------------------------------------");
+        System.out.println("1. View All Tasks");
+        System.out.println("2. View Pending Tasks");
+        System.out.println("3. View Completed Tasks");
+        System.out.println("4. Add Task");
+        System.out.println("5. Mark Task as Completed");
+        System.out.println("6. Mark Task as Pending");
+        System.out.println("7. Edit Task Description");
+        System.out.println("8. Delete a Task");
+        System.out.println("9. Logout");
+        System.out.println("--------------------------------------------------");
+
+        do {
+            System.out.print("Please make a selection: ");
+
+            // TODO Input validation
+            menuOption = scanner.nextInt();
+
+            switch (menuOption) {
+                case VIEW_ALL_TASKS_OPTION:
+                    userTasks.viewAllTasks();
+                    // TODO View all tasks implementation
+                    break;
+                case VIEW_PENDING_TASKS_OPTION:
+                    userTasks.viewTasksByCompletionStatus(false);
+                    // TODO View pending tasks implementation
+                    break;
+                case VIEW_COMPLETED_TASKS_OPTION:
+                    userTasks.viewTasksByCompletionStatus(true);
+                    // TODO View completed tasks implementation
+                    break;
+                case ADD_TASK_OPTION:
+                    Task newTask = new Task("Task Description");
+
+                    userTasks.add(newTask);
+                    // TODO Add task implementation
+                    break;
+                case MARK_TASK_COMPLETED_OPTION:
+                    // TODO Mark task as completed implementation
+                    break;
+                case MARK_TASK_PENDING_OPTION:
+                    // TODO Mark task as pending implementation
+                    break;
+                case EDIT_TASK_DESCRIPTION_OPTION:
+                    // TODO Edit task description implementation
+                    break;
+                case DELETE_TASK_OPTION:
+                    // TODO Delete task implementation
+                    break;
+                case LOGOUT_OPTION:
+                    userService.logout();
+                    break;
+                default:
+                    System.out.println("Invalid selection. Please try again.");
+            }
+
+        } while (menuOption != LOGOUT_OPTION);
     }
 }

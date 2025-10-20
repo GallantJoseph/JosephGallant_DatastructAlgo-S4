@@ -1,8 +1,6 @@
-package com.keyin.UserManagement;
+package com.keyin.Model;
 
-import com.keyin.TaskManagement.Task;
-
-import java.util.LinkedList;
+import com.keyin.TaskLinkedList.TaskList;
 
 public class User {
     private String username;
@@ -11,7 +9,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
-    private final LinkedList<Task> tasks = new LinkedList<>();
+    private final TaskList tasks = new TaskList();
 
     public User(String username, String password, String firstName, String lastName, String email) {
         this.username = username;
@@ -61,7 +59,7 @@ public class User {
         this.email = email;
     }
 
-    public LinkedList<Task> getTasks() {
+    public TaskList getTasks() {
         return tasks;
     }
 
@@ -73,7 +71,7 @@ public class User {
         this.tasks.add(task);
     }
 
-    public Task removeTask(int index) {
-        return this.tasks.remove(index);
+    public void removeTask(int index) {
+        this.tasks.remove(index);
     }
 }
