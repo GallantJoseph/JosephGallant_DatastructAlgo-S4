@@ -3,7 +3,7 @@ package com.keyin;
 /*
  * Description: Datastructures and Algorithms - Midterm Sprint: Main class to run the User and Task Management System
  * Author: Joseph Gallant
- * Date: October 18, 2025
+ * Dates: October 18, 2025 - November 1, 2025
  */
 
 import com.keyin.Model.Task;
@@ -24,7 +24,7 @@ public class Main {
         UserService userService = new UserService();
 
         do {
-            System.out.println("\nWelcome to the Task Management System\n");
+            System.out.println("\nWelcome to the Task Management System");
             System.out.println("----------------------------------------------");
             System.out.println("1. Login");
             System.out.println("2. Register");
@@ -116,65 +116,104 @@ public class Main {
             return;
         }
 
-        TaskList userTasks = userService.getLoggedInUser().getTasks();
-
-        System.out.printf("\nTask Management Main Menu. Welcome %s!\n", userService.getLoggedInUser().getFirstName());
-        System.out.println("--------------------------------------------------");
-        System.out.println("1. View All Tasks");
-        System.out.println("2. View Pending Tasks");
-        System.out.println("3. View Completed Tasks");
-        System.out.println("4. Add Task");
-        System.out.println("5. Mark Task as Completed");
-        System.out.println("6. Mark Task as Pending");
-        System.out.println("7. Edit Task Description");
-        System.out.println("8. Delete a Task");
-        System.out.println("9. Logout");
-        System.out.println("--------------------------------------------------");
-
         do {
-            System.out.print("Please make a selection: ");
+            TaskList userTasks = userService.getLoggedInUser().getTasks();
 
-            // TODO Input validation
-            menuOption = scanner.nextInt();
+            System.out.printf("\nTask Management Main Menu. Welcome %s!\n", userService.getLoggedInUser().getFirstName());
+            System.out.println("--------------------------------------------------");
+            System.out.println("1. View All Tasks");
+            System.out.println("2. View Pending Tasks");
+            System.out.println("3. View Completed Tasks");
+            System.out.println("4. Add Task");
+            System.out.println("5. Mark Task as Completed");
+            System.out.println("6. Mark Task as Pending");
+            System.out.println("7. Edit Task Description");
+            System.out.println("8. Delete a Task");
+            System.out.println("9. Logout");
+            System.out.println("--------------------------------------------------");
+
+            do {
+                System.out.print("\nPlease make a selection: ");
+
+                if (scanner.hasNextInt()) {
+                    menuOption = scanner.nextInt();
+                    scanner.nextLine();
+                    break;
+                }
+
+                scanner.nextLine();
+                System.out.println("Invalid entry. Please enter a number.");
+            } while (true);
 
             switch (menuOption) {
                 case VIEW_ALL_TASKS_OPTION:
+                    System.out.println();
                     userTasks.viewAllTasks();
-                    // TODO View all tasks implementation
+
+                    pressEnterToContinue(scanner);
                     break;
                 case VIEW_PENDING_TASKS_OPTION:
+                    System.out.println();
                     userTasks.viewTasksByCompletionStatus(false);
-                    // TODO View pending tasks implementation
+
+                    pressEnterToContinue(scanner);
                     break;
                 case VIEW_COMPLETED_TASKS_OPTION:
+                    System.out.println();
                     userTasks.viewTasksByCompletionStatus(true);
-                    // TODO View completed tasks implementation
+
+                    pressEnterToContinue(scanner);
                     break;
                 case ADD_TASK_OPTION:
-                    Task newTask = new Task("Task Description");
+                    String taskDescription;
 
-                    userTasks.add(newTask);
-                    // TODO Add task implementation
+                    do {
+                        System.out.print("\nEnter the task description: ");
+
+                        taskDescription = scanner.nextLine().trim();
+
+                        if (!taskDescription.isEmpty()) {
+                            break;
+                        }
+
+                        System.out.println("The description can't be blank.");
+                    } while (true);
+
+                    Task newTask = new Task(taskDescription);
+
+                    userTasks.addTask(newTask);
+
+                    pressEnterToContinue(scanner);
                     break;
                 case MARK_TASK_COMPLETED_OPTION:
                     // TODO Mark task as completed implementation
+                    pressEnterToContinue(scanner);
                     break;
                 case MARK_TASK_PENDING_OPTION:
                     // TODO Mark task as pending implementation
+                    pressEnterToContinue(scanner);
                     break;
                 case EDIT_TASK_DESCRIPTION_OPTION:
                     // TODO Edit task description implementation
+                    pressEnterToContinue(scanner);
                     break;
                 case DELETE_TASK_OPTION:
                     // TODO Delete task implementation
+                    pressEnterToContinue(scanner);
                     break;
                 case LOGOUT_OPTION:
                     userService.logout();
+                    pressEnterToContinue(scanner);
                     break;
                 default:
                     System.out.println("Invalid selection. Please try again.");
             }
 
         } while (menuOption != LOGOUT_OPTION);
+    }
+
+    private static void pressEnterToContinue(Scanner scanner) {
+        System.out.println("Press Enter to Continue.");
+        scanner.nextLine();
     }
 }

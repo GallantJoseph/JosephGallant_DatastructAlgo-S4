@@ -25,7 +25,7 @@ public class TaskList {
         return count;
     }
 
-    public void add(Task task) {
+    public void addTask(Task task) {
         Node newTaskList = new Node(task);
 
         if (this.head == null) {
@@ -41,7 +41,7 @@ public class TaskList {
         System.out.println("\nTask added successfully.\n");
     }
 
-    public Task get(int index) {
+    public Task getTask(int index) {
         if (index < 0 || index >= this.count) {
             System.out.println("Index out of bounds");
             return null;
@@ -56,7 +56,7 @@ public class TaskList {
         return current.getTask();
     }
 
-    public void remove(int index) {
+    public void removeTask(int index) {
         if (index < 0 || index >= this.count) {
             System.out.println("Index out of bounds");
         }
@@ -99,7 +99,7 @@ public class TaskList {
         do {
             Task currentTask = current.getTask();
             String status = currentTask.isCompleted() ? "Completed" : "Pending";
-            System.out.println(currentIndex + ". " + currentTask.getDescription() + " [" + status + "]");
+            System.out.println(currentIndex + 1 + ". " + currentTask.getDescription() + " [" + status + "]");
 
             current = current.getNext();
             currentIndex++;
@@ -121,7 +121,7 @@ public class TaskList {
 
             if (currentTask.isCompleted() == isCompleted) {
                 String status = currentTask.isCompleted() ? "Completed" : "Pending";
-                System.out.println(currentIndex + ". " + currentTask.getDescription() + " [" + status + "]");
+                System.out.println(currentIndex + 1 + ". " + currentTask.getDescription() + " [" + status + "]");
                 found = true;
             }
 
@@ -140,7 +140,7 @@ public class TaskList {
             return;
         }
 
-        Task task = get(taskIndex);
+        Task task = getTask(taskIndex);
 
         System.out.printf("Old Description: %s\n", task.getDescription());
 
@@ -156,7 +156,7 @@ public class TaskList {
             return;
         }
 
-        Task task = this.get(taskIndex);
+        Task task = this.getTask(taskIndex);
         task.setCompleted(isCompleted);
     }
 }

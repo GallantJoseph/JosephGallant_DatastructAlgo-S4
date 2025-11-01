@@ -64,14 +64,14 @@ public class User {
     }
 
     public Task getTask(int index) {
-        return this.tasks.get(index);
+        return this.tasks.getTask(index);
     }
 
     public void addTask(Task task) {
-        this.tasks.add(task);
+        this.tasks.addTask(task);
     }
 
     public void removeTask(int index) {
-        this.tasks.remove(index);
+        this.tasks.removeTask(index);
     }
 }
