@@ -232,6 +232,7 @@ public class Main {
                 break;
             } else {
                 System.out.println("Invalid input. Please try again.\n");
+                scanner.nextLine();
             }
         } while (true);
 
@@ -252,15 +253,16 @@ public class Main {
                 break;
             } else {
                 System.out.println("Invalid input. Please try again.\n");
+                scanner.nextLine();
             }
         } while (true);
 
-        task = taskList.getTask(taskId - 1);
-
-        if (task == null) {
+        if (taskId > taskList.getCount()) {
             System.out.println("Invalid task number.");
             return;
         }
+
+        task = taskList.getTask(taskId - 1);
 
         System.out.printf("\nCurrent task description: %s", task.getDescription());
         System.out.print("\nNew task description: ");
@@ -282,8 +284,14 @@ public class Main {
                 break;
             } else {
                 System.out.println("Invalid input. Please try again.\n");
+                scanner.nextLine();
             }
         } while (true);
+
+        if (taskId > taskList.getCount()) {
+            System.out.println("Invalid task number.");
+            return;
+        }
 
         taskList.removeTask(taskId - 1);
     }
