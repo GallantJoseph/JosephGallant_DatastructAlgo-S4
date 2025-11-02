@@ -1,10 +1,10 @@
 package com.keyin.Model;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.keyin.TaskLinkedList.TaskList;
 
 public class User {
     private String username;
-    // TODO Implement password hashing for security
     private String password;
     private String firstName;
     private String lastName;
@@ -13,7 +13,7 @@ public class User {
 
     public User(String username, String password, String firstName, String lastName, String email) {
         this.username = username;
-        this.password = password;
+        setPassword(password);
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -27,12 +27,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean verifyPassword(String password) {
+        return BCrypt.verifyer().verify(password.toCharArray(), this.password).verified;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = BCrypt.withDefaults().hashToString(10, password.toCharArray());
     }
 
     public String getFirstName() {

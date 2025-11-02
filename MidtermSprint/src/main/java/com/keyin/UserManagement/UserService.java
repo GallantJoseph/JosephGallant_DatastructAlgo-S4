@@ -21,9 +21,8 @@ public class UserService {
     }
 
     public void login(String username, String password) {
-        // TODO Password hashing for security
         for (int i = 0; i < users.length; i++) {
-            if (users[i].getUsername().equals(username) && users[i].getPassword().equals(password)) {
+            if (users[i].getUsername().equals(username) && users[i].verifyPassword(password)) {
                 loggedInUser = users[i];
                 System.out.println("Logged in successfully.");
                 return;

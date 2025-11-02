@@ -142,21 +142,24 @@ public class TaskList {
 
         Task task = getTask(taskIndex);
 
-        System.out.printf("Old Description: %s\n", task.getDescription());
-
         task.setDescription(newDescription);
-        System.out.printf("New Description: %s\n", task.getDescription());
 
         System.out.println("\nTask description updated successfully.\n");
     }
 
     public void markTaskAsCompleted(int taskIndex, boolean isCompleted) {
         if (taskIndex < 0 || taskIndex >= this.count) {
-            System.out.println("Index out of bounds");
+            System.out.println("Invalid task number.");
             return;
         }
 
         Task task = this.getTask(taskIndex);
-        task.setCompleted(isCompleted);
+
+        if (task.isCompleted() == isCompleted) {
+            System.out.println("Same completion status. Nothing to update.");
+        } else {
+            task.setCompleted(isCompleted);
+            System.out.println("Completion status updated successfully.");
+        }
     }
 }

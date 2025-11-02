@@ -3,7 +3,7 @@ package com.keyin;
 /*
  * Description: Datastructures and Algorithms - Midterm Sprint: Main class to run the User and Task Management System
  * Author: Joseph Gallant
- * Dates: October 18, 2025 - November 1, 2025
+ * Dates: October 18, 2025 - November 2, 2025
  */
 
 import com.keyin.Model.Task;
@@ -30,10 +30,19 @@ public class Main {
             System.out.println("2. Register");
             System.out.println("3. Exit");
             System.out.println("----------------------------------------------");
-            System.out.print("Please make a selection: ");
 
-            // TODO Input validation
-            menuOption = scanner.nextInt();
+            do {
+                System.out.print("Please make a selection: ");
+
+                if (scanner.hasNextInt()) {
+                    menuOption = scanner.nextInt();
+                    scanner.nextLine();
+                    break;
+                } else {
+                    scanner.nextLine();
+                    System.out.println("\nInvalid entry. Please enter a number.");
+                }
+            } while (true);
 
             switch (menuOption) {
                 case LOGIN_OPTION:
@@ -62,7 +71,6 @@ public class Main {
 
         System.out.println("\nEnter your credentials to log in.\n");
 
-        // TODO Input validation
         System.out.print("Username: ");
         username = scanner.next();
 
@@ -80,7 +88,6 @@ public class Main {
         String email;
         System.out.println("\nEnter your details to register.\n");
 
-        // TODO Input validation
         System.out.print("Username: ");
         username = scanner.next();
 
@@ -142,7 +149,7 @@ public class Main {
                 }
 
                 scanner.nextLine();
-                System.out.println("Invalid entry. Please enter a number.");
+                System.out.println("\nInvalid entry. Please enter a number.");
             } while (true);
 
             switch (menuOption) {
@@ -186,19 +193,20 @@ public class Main {
                     pressEnterToContinue(scanner);
                     break;
                 case MARK_TASK_COMPLETED_OPTION:
-                    // TODO Mark task as completed implementation
+                    completeTaskMenu(userTasks, scanner, true);
                     pressEnterToContinue(scanner);
                     break;
                 case MARK_TASK_PENDING_OPTION:
-                    // TODO Mark task as pending implementation
+                    userTasks.markTaskAsCompleted(0, false);
+                    completeTaskMenu(userTasks, scanner, false);
                     pressEnterToContinue(scanner);
                     break;
                 case EDIT_TASK_DESCRIPTION_OPTION:
-                    // TODO Edit task description implementation
+                    editTaskDescriptionMenu(userTasks, scanner);
                     pressEnterToContinue(scanner);
                     break;
                 case DELETE_TASK_OPTION:
-                    // TODO Delete task implementation
+                    deleteTaskMenu(userTasks, scanner);
                     pressEnterToContinue(scanner);
                     break;
                 case LOGOUT_OPTION:
@@ -210,6 +218,74 @@ public class Main {
             }
 
         } while (menuOption != LOGOUT_OPTION);
+    }
+
+    private static void completeTaskMenu(TaskList taskList, Scanner scanner, boolean isCompleted) {
+        int taskId;
+
+        do {
+            System.out.println("\nEnter the task number to update: ");
+
+            if (scanner.hasNextInt()) {
+                taskId = scanner.nextInt();
+                scanner.nextLine();
+                break;
+            } else {
+                System.out.println("Invalid input. Please try again.\n");
+            }
+        } while (true);
+
+        taskList.markTaskAsCompleted(taskId - 1, isCompleted);
+    }
+
+    private static void editTaskDescriptionMenu(TaskList taskList, Scanner scanner) {
+        int taskId;
+        Task task;
+        String description;
+
+        do {
+            System.out.println("\nEnter the task number to update: ");
+
+            if (scanner.hasNextInt()) {
+                taskId = scanner.nextInt();
+                scanner.nextLine();
+                break;
+            } else {
+                System.out.println("Invalid input. Please try again.\n");
+            }
+        } while (true);
+
+        task = taskList.getTask(taskId - 1);
+
+        if (task == null) {
+            System.out.println("Invalid task number.");
+            return;
+        }
+
+        System.out.printf("\nCurrent task description: %s", task.getDescription());
+        System.out.print("\nNew task description: ");
+
+        description = scanner.nextLine();
+
+        taskList.updateTaskDescription(taskId - 1, description);
+    }
+
+    private static void deleteTaskMenu(TaskList taskList, Scanner scanner) {
+        int taskId;
+
+        do {
+            System.out.println("\nEnter the task number to delete: ");
+
+            if (scanner.hasNextInt()) {
+                taskId = scanner.nextInt();
+                scanner.nextLine();
+                break;
+            } else {
+                System.out.println("Invalid input. Please try again.\n");
+            }
+        } while (true);
+
+        taskList.removeTask(taskId - 1);
     }
 
     private static void pressEnterToContinue(Scanner scanner) {
