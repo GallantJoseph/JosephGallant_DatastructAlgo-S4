@@ -162,4 +162,8 @@ public class TaskList {
             System.out.println("Completion status updated successfully.");
         }
     }
+
+    public boolean isValidTaskId(int taskId) {
+        return (taskId >= 0 && taskId < count) ;
+    }
 }

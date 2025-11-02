@@ -197,19 +197,47 @@ public class Main {
                     pressEnterToContinue(scanner);
                     break;
                 case MARK_TASK_COMPLETED_OPTION:
+                    userTasks.viewAllTasks();
+
+                    if (userTasks.getCount() == 0) {
+                        pressEnterToContinue(scanner);
+                        break;
+                    }
+
                     completeTaskMenu(userTasks, scanner, true);
                     pressEnterToContinue(scanner);
                     break;
                 case MARK_TASK_PENDING_OPTION:
+                    userTasks.viewAllTasks();
+
+                    if (userTasks.getCount() == 0) {
+                        pressEnterToContinue(scanner);
+                        break;
+                    }
+
                     userTasks.markTaskAsCompleted(0, false);
                     completeTaskMenu(userTasks, scanner, false);
                     pressEnterToContinue(scanner);
                     break;
                 case EDIT_TASK_DESCRIPTION_OPTION:
+                    userTasks.viewAllTasks();
+
+                    if (userTasks.getCount() == 0) {
+                        pressEnterToContinue(scanner);
+                        break;
+                    }
+
                     editTaskDescriptionMenu(userTasks, scanner);
                     pressEnterToContinue(scanner);
                     break;
                 case DELETE_TASK_OPTION:
+                    userTasks.viewAllTasks();
+
+                    if (userTasks.getCount() == 0) {
+                        pressEnterToContinue(scanner);
+                        break;
+                    }
+
                     deleteTaskMenu(userTasks, scanner);
                     pressEnterToContinue(scanner);
                     break;
@@ -227,6 +255,10 @@ public class Main {
     private static void completeTaskMenu(TaskList taskList, Scanner scanner, boolean isCompleted) {
         int taskId;
 
+        if (taskList.getCount() == 0) {
+            System.out.println("No task");
+        }
+
         do {
             System.out.println("\nEnter the task number to update: ");
 
@@ -239,6 +271,11 @@ public class Main {
                 scanner.nextLine();
             }
         } while (true);
+
+        if (!taskList.isValidTaskId(taskId - 1)) {
+            System.out.println("Invalid task number.");
+            return;
+        }
 
         taskList.markTaskAsCompleted(taskId - 1, isCompleted);
     }
@@ -261,7 +298,7 @@ public class Main {
             }
         } while (true);
 
-        if (taskId > taskList.getCount()) {
+        if (!taskList.isValidTaskId(taskId - 1)) {
             System.out.println("Invalid task number.");
             return;
         }
@@ -292,7 +329,7 @@ public class Main {
             }
         } while (true);
 
-        if (taskId > taskList.getCount()) {
+        if (!taskList.isValidTaskId(taskId - 1)) {
             System.out.println("Invalid task number.");
             return;
         }
