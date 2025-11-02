@@ -72,12 +72,16 @@ public class Main {
         System.out.println("\nEnter your credentials to log in.\n");
 
         System.out.print("Username: ");
-        username = scanner.next();
+        username = scanner.nextLine();
 
         System.out.print("Password: ");
-        password = scanner.next();
+        password = scanner.nextLine();
 
         userService.login(username, password);
+
+        if (userService.getLoggedInUser() == null) {
+            pressEnterToContinue(scanner);
+        }
     }
 
     private static void registerMenu(Scanner scanner, UserService userService) {
@@ -89,19 +93,19 @@ public class Main {
         System.out.println("\nEnter your details to register.\n");
 
         System.out.print("Username: ");
-        username = scanner.next();
+        username = scanner.nextLine();
 
         System.out.print("Password: ");
-        password = scanner.next();
+        password = scanner.nextLine();
 
         System.out.print("First Name: ");
-        firstName = scanner.next();
+        firstName = scanner.nextLine();
 
         System.out.print("Last Name: ");
-        lastName = scanner.next();
+        lastName = scanner.nextLine();
 
         System.out.print("Email: ");
-        email = scanner.next();
+        email = scanner.nextLine();
 
         userService.register(username, password, firstName, lastName, email);
     }
