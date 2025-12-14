@@ -1,0 +1,6 @@
+#main-nav ul {
+    display: flex;
+    list-style: none;
+    font-size: 2rem;
+    justify-content: space-between;
+}
