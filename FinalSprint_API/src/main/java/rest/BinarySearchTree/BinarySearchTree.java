@@ -12,6 +12,8 @@ public class BinarySearchTree {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "binary_tree_sequence")
     private Long id;
     private List<Integer> numbers = new LinkedList<>();
+
+    @Column(length = 65536)
     private String jsonTree;
 
     public Long getId() {

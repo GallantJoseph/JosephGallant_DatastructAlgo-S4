@@ -1,15 +1,27 @@
 package rest.BinarySearchTree;
 
-import org.antlr.v4.runtime.tree.Tree;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BinarySearchTreeService {
     @Autowired
     BinarySearchTreeRepository binarySearchTreeRepository;
+
+    public TreeNode buildBinarySearchTree(int[] values) {
+        TreeNode root = null;
+
+        for (int value : values) {
+            root = insertValue(root, value);
+        }
+
+        return root;
+    }
 
     private TreeNode insertValue(TreeNode currentNode, int value) {
         if (currentNode == null) {
@@ -25,35 +37,29 @@ public class BinarySearchTreeService {
         return currentNode;
     }
 
-    public TreeNode buildBinarySearchTree(int[] values) {
-        TreeNode root = null;
+    public String buildJSONTree(TreeNode rootNode) {
+        String jsonTree = "";
 
-        for (int value : values) {
-            root = insertValue(root, value);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            Map<String, Object> wrapper = new HashMap<>();
+            wrapper.put("root", rootNode);
+
+            jsonTree = objectMapper
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(wrapper);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return root;
+        return jsonTree;
     }
 
-    public String buildJSONTree(TreeNode rootNode) {
-        // TODO Traverse the tree to build the JSON String
-        return null;
-    }
-
-    public Iterable<BinarySearchTree> getAllBinarySearchTrees() {
-        return binarySearchTreeRepository.findAll();
-    }
-
-    public BinarySearchTree getBinarySearchTreeById(Long id) {
-        return binarySearchTreeRepository.findById(id).orElse(null);
-    }
-
-    public BinarySearchTree saveBinarySearchTree(List<Integer> inputNumbers, TreeNode rootNode) {
+    public BinarySearchTree saveBinarySearchTree(List<Integer> inputNumbers, String jsonTree) {
         BinarySearchTree binarySearchTree = new BinarySearchTree();
         binarySearchTree.setNumbers(inputNumbers);
-
-        // TODO Generate the JSON data and save it to the string
-        binarySearchTree.setJsonTree(inputNumbers.toString());
+        binarySearchTree.setJsonTree(jsonTree);
 
         return binarySearchTreeRepository.save(binarySearchTree);
     }
@@ -63,15 +69,10 @@ public class BinarySearchTreeService {
             return null;
         }
 
-        // Create the new BinarySearchTree from the numbers
         int[] numbersArray = numbers.stream()
                 .mapToInt(i -> i)
                 .toArray();
 
         return buildBinarySearchTree(numbersArray);
-    }
-
-    public void deleteAircraftById(Long id) {
-        binarySearchTreeRepository.deleteById(id);
     }
 }

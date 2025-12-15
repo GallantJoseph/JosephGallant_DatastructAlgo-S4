@@ -11,24 +11,27 @@ import java.util.List;
 @CrossOrigin
 public class BinarySearchTreeController {
     @Autowired
+    BinarySearchTreeRepository binarySearchTreeRepository;
+
+    @Autowired
     BinarySearchTreeService binarySearchTreeService;
 
     @GetMapping
     public ResponseEntity<Iterable<BinarySearchTree>> getAllBinarySearchTrees(){
-        return ResponseEntity.ok(binarySearchTreeService.getAllBinarySearchTrees());
+        return ResponseEntity.ok(binarySearchTreeRepository.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BinarySearchTree> getBinarySearchTreeById(@PathVariable Long id,
-                                                                    @RequestParam("balanced_tree") Boolean balancedTree){
+                                                                    @RequestParam(value = "balanced_tree", required = false) Boolean balancedTree){
 
-        BinarySearchTree binarySearchTree = binarySearchTreeService.getBinarySearchTreeById(id);
+        BinarySearchTree binarySearchTree = binarySearchTreeRepository.findById(id).orElse(null);
 
         if (binarySearchTree == null){
             return ResponseEntity.notFound().build();
         }
 
-        if (balancedTree) {
+        if (balancedTree != null && balancedTree) {
             //TODO Code to balance the tree here
         }
 
@@ -38,17 +41,20 @@ public class BinarySearchTreeController {
     @PostMapping
     public ResponseEntity<String> createBinarySearchTree(@RequestBody List<Integer> numbers){
         if (numbers.isEmpty()) {
-            return ResponseEntity.badRequest().body("At least one number is required to build a tree.");
+            return ResponseEntity.badRequest().build();
         }
 
-        TreeNode binarySearchTreeRootNode = binarySearchTreeService.createBinarySearchTree(numbers);
+        TreeNode rootNode = binarySearchTreeService.createBinarySearchTree(numbers);
+        String jsonTree = binarySearchTreeService.buildJSONTree(rootNode);
 
-        return ResponseEntity.ok(binarySearchTreeService.saveBinarySearchTree(numbers, binarySearchTreeRootNode).getJsonTree());
+        binarySearchTreeService.saveBinarySearchTree(numbers, jsonTree);
+
+        return ResponseEntity.ok(jsonTree);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBinarySearchTree(@PathVariable Long id){
-        binarySearchTreeService.deleteAircraftById(id);
+    public ResponseEntity<Void> deleteBinarySearchTreeById(@PathVariable Long id){
+        binarySearchTreeRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }
