@@ -1,0 +1,11 @@
+#main-nav ul {
+    display: flex;
+    list-style: none;
+    font-size: 2rem;
+    justify-content: space-between;
+}
+
+#main-nav ul li {
+    padding-left: 32px;
+    padding-right: 32px;
+}
