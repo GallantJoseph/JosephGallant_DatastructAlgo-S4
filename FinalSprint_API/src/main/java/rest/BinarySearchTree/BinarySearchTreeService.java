@@ -23,7 +23,7 @@ public class BinarySearchTreeService {
         return root;
     }
 
-    private TreeNode insertValue(TreeNode currentNode, int value) {
+    protected TreeNode insertValue(TreeNode currentNode, int value) {
         if (currentNode == null) {
             return new TreeNode(value);
         }
@@ -56,11 +56,7 @@ public class BinarySearchTreeService {
         return jsonTree;
     }
 
-    public BinarySearchTree saveBinarySearchTree(List<Integer> inputNumbers, String jsonTree) {
-        BinarySearchTree binarySearchTree = new BinarySearchTree();
-        binarySearchTree.setNumbers(inputNumbers);
-        binarySearchTree.setJsonTree(jsonTree);
-
+    public BinarySearchTree saveBinarySearchTree(BinarySearchTree binarySearchTree) {
         return binarySearchTreeRepository.save(binarySearchTree);
     }
 
