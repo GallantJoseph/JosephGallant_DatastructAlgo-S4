@@ -47,7 +47,11 @@ public class BinarySearchTreeController {
         TreeNode rootNode = binarySearchTreeService.createBinarySearchTree(numbers);
         String jsonTree = binarySearchTreeService.buildJSONTree(rootNode);
 
-        binarySearchTreeService.saveBinarySearchTree(numbers, jsonTree);
+        BinarySearchTree binarySearchTree = new BinarySearchTree();
+        binarySearchTree.setNumbers(numbers);
+        binarySearchTree.setJsonTree(jsonTree);
+
+        binarySearchTreeService.saveBinarySearchTree(binarySearchTree);
 
         return ResponseEntity.ok(jsonTree);
     }
