@@ -5,18 +5,28 @@ import {getAllBSTs} from '../bstapi/BST_API_Service.js'
 
 function PreviousBSTs() {
     const [binarySearchTrees, setBinarySearchTrees] = useState();
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
 
     const getBinaryTrees = async () => {
-        const data = await getAllBSTs();
+            setErrorMessage(null);
+            setSuccessMessage(null);
+        try {
+            const data = await getAllBSTs();
 
-        console.log(data);
-        setBinarySearchTrees(data);
+            setBinarySearchTrees(data);
+        } catch (error) {
+            setErrorMessage("An error occurred while fetching the data.");
+        }
+        
     }
 
     return (
         <>
             <h1>Binary Search Trees</h1>
             <button onClick={getBinaryTrees}>Get All</button>
+            <p id='error-message'>{errorMessage && errorMessage}</p>
+            <p id='success-message'>{successMessage && successMessage}</p>
             <>
             <div id='bst-data-container'>
                 <ul>
